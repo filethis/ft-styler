@@ -3,13 +3,17 @@
     "description": "An element that lets designers apply CSS style to FileThis elements.",
     "main": "ft-styler.html",
     "dependencies": {
-        "ft-element-demo": "filethis/ft-element-demo#^0.0.1",
+        "cbn-copy-clipboard": "CBN-IT/cbn-copy-clipboard#^1.0.1",
+        "csslint": "filethis/csslint#^1.0.5",
+        "ft-labeled-icon-button": "filethis/ft-labeled-icon-button#^0.0.10",
         "polymer": "Polymer/polymer#1.9 - 2"
     },
     "devDependencies": {
         "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
         "iron-demo-helpers": "PolymerElements/iron-demo-helpers#1 - 2",
+        "iron-label": "PolymerElements/iron-label#1 - 2",
         "iron-test-helpers": "PolymerElements/iron-test-helpers#1 - 2",
+        "paper-input": "PolymerElements/paper-input#1 - 2",
         "web-component-tester": "Polymer/web-component-tester#^6.0.0",
         "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
     },
