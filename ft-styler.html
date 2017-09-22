@@ -15,16 +15,18 @@ limitations under the License.
 -->
 
 
-<link rel="import" href="../cbn-copy-clipboard/cbn-copy-clipboard.html">
-<link rel="import" href="../cbn-copy-clipboard/cbn-copy-clipboard-behavior.html">
+<link rel="import" href="../ft-confirmation-dialog/ft-confirmation-dialog.html">
 <link rel="import" href="../ft-labeled-icon-button/ft-labeled-icon-button.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-label/iron-label.html">
+<link rel="import" href="../juicy-ace-editor/juicy-ace-editor.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-input/paper-textarea.html">
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ft-css-editor.html">
 
-<script src="../csslint/dist/csslint.js"></script>
 
 <!--
 `<ft-styler>`
@@ -45,18 +47,12 @@ aaaaaaaaa
                 min-width:400px;
                 @apply --layout-vertical;
             }
-
-            .string { color: green; }
-            .number { color: darkorange; }
-            .boolean { color: blue; }
-            .null { color: magenta; }
-            .key { color: red; }
         </style>
 
         <!-- Header -->
         <div
                 class="layout horizontal center"
-                style="height:60px; padding-left:12px; padding-right:12px; border-bottom:1px solid #DDD; ">
+                style="height:60px; padding-left:12px; padding-right:8px; border-bottom:1px solid #DDD; ">
 
             <!-- Title -->
             <iron-label
@@ -67,65 +63,29 @@ aaaaaaaaa
 
             <div class="flex"></div>
 
-            <!-- Validate -->
-            <ft-labeled-icon-button
-                    id="validateButton"
-                    icon="check"
-                    label="Validate"
-                    disabled="[[!_canValidate]]"
-                    on-tap="_onValidateButtonClicked">
-            </ft-labeled-icon-button>
-
-            <!-- Copy -->
-            <ft-labeled-icon-button
-                    id="copyButton"
-                    icon="content-paste"
-                    label="Copy"
-                    disabled="[[!_canCopy]]"
-                    on-tap="_onCopyButtonClicked">
-            </ft-labeled-icon-button>
-
             <!-- Apply -->
             <ft-labeled-icon-button
                     id="applyButton"
                     icon="exit-to-app"
                     label="Apply"
-                    disabled="[[!_canApply]]"
                     on-tap="_onApplyButtonClicked">
             </ft-labeled-icon-button>
         </div>
 
-        <!-- CSS -->
-        <paper-textarea
-                id="css"
-                class="flex scroll"
-                style="padding-left:12px;
-                       padding-right:12px;
-                       background-color:white;
-                       font-size:12px;
-                       font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace; "
-                value="{{css}}"
-                label="CSS"
-                invalid="{{_cssInvalid}}">
-        </paper-textarea>
-
-        <!-- Output -->
+        <!-- Editors -->
         <div
-                id="output"
-                class="flex"
-                style="padding-left:12px;
-                       padding-right:12px;
-                       background-color:white;
-                       border-top:1px solid #DDD;
-                       font-size:12px;
-                       font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace; ">
-            <pre>[[output]]</pre>
+                class="flex scroll"
+                style="padding-left:8px; padding-right:8px; padding-bottom:12px; ">
+
+            <template is="dom-repeat" items="[[stylables]]" as="stylable">
+                <ft-css-editor
+                        stylable="[[stylable]]">
+                </ft-css-editor>
+            </template>
         </div>
 
-        <!-- Clipboard -->
-        <cbn-copy-clipboard
-                id="clipboard">
-        </cbn-copy-clipboard>
+        <!-- Confirmation dialog -->
+        <ft-confirmation-dialog id="confirmationDialog"></ft-confirmation-dialog>
 
     </template>
 
@@ -136,71 +96,86 @@ aaaaaaaaa
 
             properties: {
 
-                _cssInvalid:
-                    {
-                        type: Boolean,
-                        value: false
-                    },
-
-                css:
-                    {
-                        type: String,
-                        observer: "_onCssChanged"
-                    },
-
-                output:
-                    {
-                        type: String
-                    },
-
-                _canValidate: {
-                    type: Boolean,
-                    value: false
-                },
-
-                _canApply: {
-                    type: Boolean,
-                    value: false
-                },
-
-                _canCopy: {
-                    type: Boolean,
-                    value: false
+                stylables: {
+                    type: Array,
+                    notify: true,
+                    value: [
+                        {
+                            name: "ft-connect-tabbed",
+                            value: "ft-connect-tabbed:" + "{ color:red; }",
+                            editor: null,
+                            isValid: true
+                        },
+                        {
+                            name:"ft-source-panel",
+                            value: "ft-source-panel:" + "{ color:red; }",
+                            editor: null,
+                            isValid: true
+                        },
+                        {
+                            name:"ft-connection-panel",
+                            value: "ft-connection-panel:" + "{ color:red; }",
+                            editor: null,
+                            isValid: true
+                        },
+                        {
+                            name:"ft-document-panel",
+                            value: "ft-document-panel:" + "{ color:red; }",
+                            editor: null,
+                            isValid: true
+                        }
+                    ]
                 }
             },
 
-            _onCssChanged: function(to, from)
+            _onChangeAnnotation: function(event)
             {
-                this._enableOrDisableButtons();
-            },
-
-            _enableOrDisableButtons: function()
-            {
-                var haveText = !!this.css;
-                this._canValidate = haveText;
-                this._canApply = haveText;
-                this._canCopy = haveText;
-            },
-
-            _onValidateButtonClicked: function(event, detail)
-            {
-                this._validate();
+//                var session = this.$.css.editor.getSession();
+//                var annotations = session.getAnnotations();
+//                this._canApply = (annotations.length === 0);
             },
 
             _onApplyButtonClicked: function(event, detail)
             {
-                this._validate();
+                var invalidStylables = this._collectInvalidStylables();
+                var someStyleIsInvalid = (invalidStylables.length > 0);
+                if (someStyleIsInvalid)
+                {
+                    // Scroll to the first one
+                    var firstInvalidStylable = invalidStylables[0];
+                    var editor = firstInvalidStylable.editor;
+                    if (editor !== null)
+                        editor.scrollIntoView();
 
-                // TODO: Apply
+                    // Display dialog to user
+                    message = "The following CSS blocks are invalid and need to be corrected:<br><br>";
+                    invalidStylables.forEach(function(stylable)
+                    {
+                        message += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;" + stylable.name + "&gt;<br>";
+                    });
+                    this.$.confirmationDialog.alert(message);
+                    return;
+                }
+
+//                var obj = css.parse('body { font-size: 12px; }', options);
+//
+//                var cssAsJson = JSON.parse(this.css);
+//                var other = cssAsJson;
             },
 
-            _onCopyButtonClicked: function(event, detail)
+            _collectInvalidStylables: function()
             {
-                this._validate();
-
-                var clipboard = this.$.clipboard;
-                clipboard.value = this.css;
-                clipboard.copy();
+                var invalidStylables = [];
+                var count = this.stylables.length;
+                for (var index = 0;
+                     index < count;
+                     index++)
+                {
+                    var stylable = this.stylables[index];
+                    if (!stylable.isValid)
+                        invalidStylables.push(stylable);
+                }
+                return invalidStylables;
             },
 
             _validate: function()

@@ -4,8 +4,9 @@
     "main": "ft-styler.html",
     "dependencies": {
         "cbn-copy-clipboard": "CBN-IT/cbn-copy-clipboard#^1.0.1",
-        "csslint": "filethis/csslint#^1.0.5",
+        "ft-confirmation-dialog": "filethis/ft-confirmation-dialog#^0.0.13",
         "ft-labeled-icon-button": "filethis/ft-labeled-icon-button#^0.0.10",
+        "juicy-ace-editor": "^2.0.4",
         "polymer": "Polymer/polymer#1.9 - 2"
     },
     "devDependencies": {
