@@ -157,10 +157,40 @@ aaaaaaaaa
                     return;
                 }
 
-//                var obj = css.parse('body { font-size: 12px; }', options);
-//
-//                var cssAsJson = JSON.parse(this.css);
-//                var other = cssAsJson;
+                this._applyAllStylables();
+            },
+
+            _applyAllStylables: function()
+            {
+                // Create a parser
+                var parser = new cssjs();
+
+                // For each stylable
+                var stylableCount = this.stylables.length;
+                for (var stylableIndex = 0;
+                     stylableIndex < stylableCount;
+                     stylableIndex++)
+                {
+                    // Parse the stylable
+                    var stylable = this.stylables[stylableIndex];
+                    var css = stylable.value;
+                    var expressions = parser.parseCSS(css);
+
+                    // For each expression in the stylable
+                    var expressionCount = expressions.length;
+                    for (var expressionIndex = 0;
+                         expressionIndex < expressionCount;
+                         expressionIndex++)
+                    {
+                        var expression = expressions[expressionIndex];
+                        var selector = expression.selector;
+                        var rules = expression.rules;
+
+                        var prefixedSelector = "--" + selector;
+
+                        Polymer.updateStyles({prefixedSelector: '#ed0'});
+                    }
+                }
             },
 
             _collectInvalidStylables: function()
