@@ -48,37 +48,31 @@ aaaaaaaaa
             :host {
                 display:block;
                 min-width:400px;
+                padding-left:16px;
+                padding-right:16px;
                 @apply --layout-vertical;
             }
         </style>
 
-        <!-- Element heaader -->
+        <!-- Element header -->
         <div
                 class="layout horizontal center"
-                style="padding-left:12px; padding-right:12px; padding-top:5pt; padding-bottom:5pt; ">
+                style="padding-top:10pt; padding-bottom:10pt; ">
 
             <!-- Title -->
             <iron-label
                     style="font-family:Arial; font-size:14pt; ">
-                <[[selector]]>
+                CSS
             </iron-label>
 
             <div class="flex"></div>
 
             <!-- Example button -->
             <ft-labeled-icon-button
-                    id="documentationButton"
+                    id="exampleButton"
                     icon="dashboard"
                     label="Sample"
-                    on-tap="_onDocumentationButtonClicked">
-            </ft-labeled-icon-button>
-
-            <!-- Documentation button -->
-            <ft-labeled-icon-button
-                    id="documentationButton"
-                    icon="info-outline"
-                    label="Docs"
-                    on-tap="_onDocumentationButtonClicked">
+                    on-tap="_onExampleButtonClicked">
             </ft-labeled-icon-button>
 
             <!-- Copy button -->
@@ -112,7 +106,7 @@ aaaaaaaaa
         <!-- Declaration header -->
         <div
                 class="layout horizontal center"
-                style="padding-left:12px; padding-right:12px; padding-top:5pt; padding-bottom:5pt; ">
+                style="padding-top:10pt; padding-bottom:5pt; ">
 
             <!-- Title -->
             <iron-label
@@ -134,7 +128,7 @@ aaaaaaaaa
         <!-- Declaration List -->
         <div
                 class="scroll"
-                style="padding-left:12px; padding-right:12px; padding-bottom:12px; ">
+                style="padding-bottom:12px; border:1px solid #DDD; ">
 
             <template is="dom-repeat" items="{{declarations}}" as="declaration">
                 <ft-css-declaration-editor
@@ -170,11 +164,21 @@ aaaaaaaaa
 
             properties: {
 
-                selector: {
+                name: {
                     type: String,
                     notify: true,
                     value: "ft-thing",
                     observer: "_onSettingChangedDebounced"
+                },
+
+                css: {
+                    type: String,
+                    notify: true
+                },
+
+                target: {
+                    type: Object,
+                    notify: true
                 },
 
                 declarations: {
@@ -208,11 +212,6 @@ aaaaaaaaa
                                 }
                             ]
                         }
-                },
-
-                css: {
-                    type: String,
-                    notify: true
                 }
             },
 
@@ -252,7 +251,7 @@ aaaaaaaaa
 
             _generateCss: function()
             {
-                var css = "--" + this.selector + ": {";
+                var css = "--" + this.name + ": {";
                 this.declarations.forEach(function(declaration)
                 {
                     css += "\n    " + declaration.name + ": " + declaration.value + ";";
@@ -288,19 +287,20 @@ aaaaaaaaa
 
             _onApplyButtonClicked: function(event, detail)
             {
-                var invalidStylables = this._collectInvalidStylables();
-                var someStyleIsInvalid = (invalidStylables.length > 0);
-                if (someStyleIsInvalid)
+                // Check for invalid declarations
+                var invalidDeclarations = this._collectInvalidDeclarations();
+                var someDeclarationIsInvalid = (invalidDeclarations.length > 0);
+                if (someDeclarationIsInvalid)
                 {
                     // Scroll to the first one
-                    var firstInvalidStylable = invalidStylables[0];
-                    var editor = firstInvalidStylable.editor;
-                    if (editor !== null)
-                        editor.scrollIntoView();
+//                    var firstInvalidDeclaration = invalidDeclarations[0];
+//                    var editor = firstInvalidDeclaration.editor;
+//                    if (editor !== null)
+//                        editor.scrollIntoView();
 
                     // Display dialog to user
-                    message = "The following CSS blocks are invalid and need to be corrected:<br><br>";
-                    invalidStylables.forEach(function(declaration)
+                    message = "The following CSS declarations are invalid and need to be corrected:<br><br>";
+                    invalidDeclarations.forEach(function(declaration)
                     {
                         message += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;" + declaration.name + "&gt;<br>";
                     });
@@ -308,7 +308,7 @@ aaaaaaaaa
                     return;
                 }
 
-                this._applyAllStylables();
+                this._applyAllDeclarations();
             },
 
             _onCopyCssButtonClicked: function(event, detail)
@@ -318,40 +318,33 @@ aaaaaaaaa
                 clipboard.copy();
             },
 
-            _applyAllStylables: function()
+            _onExampleButtonClicked: function(event, detail)
             {
-                // Create a parser
-                var parser = new cssjs();
-
-                // For each declaration
-                var stylableCount = this.declarations.length;
-                for (var stylableIndex = 0;
-                     stylableIndex < stylableCount;
-                     stylableIndex++)
-                {
-                    // Parse the declaration
-                    var declaration = this.declarations[stylableIndex];
-                    var css = declaration.value;
-                    var expressions = parser.parseCSS(css);
-
-                    // For each expression in the declaration
-                    var expressionCount = expressions.length;
-                    for (var expressionIndex = 0;
-                         expressionIndex < expressionCount;
-                         expressionIndex++)
-                    {
-                        var expression = expressions[expressionIndex];
-                        var selector = expression.selector;
-                        var rules = expression.rules;
-
-                        var prefixedSelector = "--" + selector;
-
-                        Polymer.updateStyles({prefixedSelector: '#ed0'});
-                    }
-                }
             },
 
-            _collectInvalidStylables: function()
+            _applyAllDeclarations: function()
+            {
+                // For each declaration
+                var styles = {};
+                this.declarations.forEach(function(declaration)
+                {
+                    // Build css expression for this declaration
+                    var name = declaration.name;
+                    var value = declaration.value;
+
+                    styles[name] = value;
+
+                    // Apply
+//                    if (this.target)
+//                        this.target.updateStyles(css);
+//                    else // apply globally
+//                        Polymer.updateStyles(css);
+                }.bind(this));
+
+                this.target.updateStyles(styles);
+            },
+
+            _collectInvalidDeclarations: function()
             {
                 var invalidStylables = [];
                 var count = this.declarations.length;
@@ -360,10 +353,15 @@ aaaaaaaaa
                      index++)
                 {
                     var declaration = this.declarations[index];
-                    if (!declaration.isValid)
+                    if (!this._declarationIsValid(declaration))
                         invalidStylables.push(declaration);
                 }
                 return invalidStylables;
+            },
+            
+            _declarationIsValid: function(declaration)
+            {
+                return true;
             },
 
             // Declarations list changes
