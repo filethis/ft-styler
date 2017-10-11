@@ -168,7 +168,7 @@ aaaaaaaaa
                     type: String,
                     notify: true,
                     value: "ft-thing",
-                    observer: "_onSettingChangedDebounced"
+                    observer: "_onSettingChanged"
                 },
 
                 css: {
@@ -234,17 +234,17 @@ aaaaaaaaa
                 }.bind(this), 100)
             },
 
-            _onSettingChangedDebounced: function()
+            _onSettingChanged: function()
             {
                 this._settingChangedDebouncer = Polymer.Debouncer.debounce
                 (
                     this._settingChangedDebouncer,
                     Polymer.Async.timeOut.after(60),
-                    this._onSettingChanged.bind(this)
+                    this._onSettingChangedDebounced.bind(this)
                 );
             },
 
-            _onSettingChanged: function()
+            _onSettingChangedDebounced: function()
             {
                 this._generateCss();
             },
@@ -368,14 +368,14 @@ aaaaaaaaa
 
             _onDeclarationChanged: function(event)
             {
-                this._onSettingChangedDebounced();
+                this._onSettingChanged();
             },
 
             _onDeclarationsListChanged: function(changeRecord)
             {
                 if (!changeRecord)
                     return;
-                this._onSettingChangedDebounced();
+                this._onSettingChanged();
             }
 
         });
