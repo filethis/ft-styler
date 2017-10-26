@@ -15,8 +15,7 @@ limitations under the License.
 -->
 
 
-<link rel="import" href="../cbn-copy-clipboard/cbn-copy-clipboard-behavior.html">
-<link rel="import" href="../cbn-copy-clipboard/cbn-copy-clipboard.html">
+<link rel="import" href="../ft-clipboard-behavior/ft-clipboard-behavior.html">
 <link rel="import" href="../ft-confirmation-dialog/ft-confirmation-dialog.html">
 <link rel="import" href="../ft-labeled-icon-button/ft-labeled-icon-button.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
@@ -141,17 +140,14 @@ aaaaaaaaa
         <!-- Confirmation dialog -->
         <ft-confirmation-dialog id="confirmationDialog"></ft-confirmation-dialog>
 
-        <!-- Clipboard -->
-        <cbn-copy-clipboard
-                id="clipboard">
-        </cbn-copy-clipboard>
-
     </template>
 
     <script>
         Polymer({
 
             is: 'ft-styler',
+
+            behaviors: [FileThis.ClipboardBehavior],
 
             observers: [
                 '_onDeclarationsListChanged(declarations.splices)'
@@ -218,6 +214,9 @@ aaaaaaaaa
 
             ready: function()
             {
+                // Suppress deprecation warning
+                this.$.css.editor.$blockScrolling = Infinity;
+
                 // TODO: The "editor" property is undefined when the ready() method is called. That seems wrong. Fix.
                 this.async(function()
                 {
@@ -314,9 +313,7 @@ aaaaaaaaa
 
             _onCopyCssButtonClicked: function(event, detail)
             {
-                var clipboard = this.$.clipboard;
-                clipboard.value = this.css;
-                clipboard.copy();
+                this.copyTextToClipboard(this.css);
             },
 
             _onExampleButtonClicked: function(event, detail)

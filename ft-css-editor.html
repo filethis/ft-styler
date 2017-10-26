@@ -103,6 +103,9 @@ aaaaaaaaa
 
             ready: function()
             {
+                // Suppress deprecation warning
+                this.$.editor.editor.$blockScrolling = Infinity;
+
                 // TODO: The "editor" property is undefined when the ready() method is called. That seems wrong. Fix.
                 this.async(function()
                 {
