@@ -1,6 +1,6 @@
 # Project configuration
 NAME=ft-styler
-VERSION=0.0.4
+VERSION=0.0.5
 LOCAL_PORT=3514
 GITHUB_USER=filethis
 GITHUB_USER_ABBREV=ft
