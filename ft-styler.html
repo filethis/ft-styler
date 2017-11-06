@@ -155,7 +155,7 @@ aaaaaaaaa
 
             listeners:
             {
-                'delete-button-clicked': '_onDeleteDeclarationButtonClicked',
+                'delete-declaration-command': '_onDeleteDeclarationCommand',
                 'declaration-changed': '_onDeclarationChanged'
             },
 
@@ -276,7 +276,7 @@ aaaaaaaaa
                 this.push('declarations', declaration);
             },
 
-            _onDeleteDeclarationButtonClicked: function(event)
+            _onDeleteDeclarationCommand: function(event)
             {
                 var declaration = event.detail;
 
