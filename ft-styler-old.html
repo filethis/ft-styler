@@ -43,8 +43,8 @@ aaaaaaaaa
 
         <style>
             :host {
-                display:block;
-                overflow:hidden;
+                display: block;
+                overflow: hidden;
                 min-width:400px;
                 @apply --layout-vertical;
             }
@@ -53,12 +53,12 @@ aaaaaaaaa
         <!-- Header -->
         <div
                 class="layout horizontal center"
-                style="height:60px; padding-left:12px; padding-right:8px; border-bottom:1px solid #DDD; ">
+                style="height:60px; padding-left: 12px; padding-right: 8px; border-bottom: 1px solid #DDD; ">
 
             <!-- Heading -->
             <iron-label
                     hidden$="[[!showHeading]]"
-                    style="font-family:Arial; font-size:14pt; ">
+                    style="font-family:Arial; font-size: 14pt; ">
                 Styler
             </iron-label>
 
@@ -76,7 +76,7 @@ aaaaaaaaa
         <!-- Editors -->
         <div
                 class="flex scroll"
-                style="padding-left:8px; padding-right:8px; padding-bottom:12px; ">
+                style="padding-left:8px; padding-right: 8px; padding-bottom: 12px; ">
 
             <template is="dom-repeat" items="[[stylables]]" as="stylable">
                 <ft-css-editor
@@ -103,25 +103,25 @@ aaaaaaaaa
                     value: [
                         {
                             name: "ft-connect-tabbed",
-                            value: "ft-connect-tabbed:" + "{ color:red; }",
+                            value: "ft-connect-tabbed:" + "{ color: red; }",
                             editor: null,
                             isValid: true
                         },
                         {
                             name:"ft-source-panel",
-                            value: "ft-source-panel:" + "{ color:red; }",
+                            value: "ft-source-panel:" + "{ color: red; }",
                             editor: null,
                             isValid: true
                         },
                         {
                             name:"ft-connection-panel",
-                            value: "ft-connection-panel:" + "{ color:red; }",
+                            value: "ft-connection-panel:" + "{ color: red; }",
                             editor: null,
                             isValid: true
                         },
                         {
                             name:"ft-document-panel",
-                            value: "ft-document-panel:" + "{ color:red; }",
+                            value: "ft-document-panel:" + "{ color: red; }",
                             editor: null,
                             isValid: true
                         }

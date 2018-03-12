@@ -143,7 +143,7 @@
     and returns an array of objects containing ruleName:ruleValue pairs
 
     @param rules, css directive string example
-        \n\ncolor:white;\n    font-size:18px;\n
+        \n\ncolor:white;\n    font-size: 18px;\n
   */
   fi.prototype.parseRules = function(rules) {
     //convert all windows style line endings to unix style line endings
@@ -156,7 +156,7 @@
     for (var i = 0; i < rules.length; i++) {
       var line = rules[i];
 
-      //determine if line is a valid css directive, ie color:white;
+      //determine if line is a valid css directive, ie color: white;
       line = line.trim();
       if (line.indexOf(':') !== -1) {
         //line contains :
