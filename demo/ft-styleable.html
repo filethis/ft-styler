@@ -21,8 +21,6 @@ limitations under the License.
 <link rel="import" href="../../ft-element-demo/ft-element-demo.html">
 <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../polymer/polymer.html">
-<link rel="import" href="../ft-styler.html">
-<link rel="import" href="ft-styleable.html">
 
 
 <!--
@@ -31,7 +29,7 @@ An element that lets designers apply CSS style to FileThis elements.
 
 @demo
  -->
-<dom-module id="demo-fixture">
+<dom-module id="ft-styleable">
 
     <template>
 
@@ -43,19 +41,18 @@ An element that lets designers apply CSS style to FileThis elements.
             :host {
                 display: block;
                 overflow: hidden;
-                @apply --layout-horizontal;
+                @apply --layout-vertical;
+                @apply --ft-styleable;
             }
-
+            
         </style>
 
-        <ft-styler
-            style="border-right:1px solid black; "
-            target="{{target}}"
+        <div
+            class="flex"
+            style="padding:16px; "
         >
-        </ft-styler>
-
-        <ft-styleable id="styleable">
-        </ft-styleable>
+            Something stylableeeeee
+        </div>
 
     </template>
 
@@ -63,31 +60,11 @@ An element that lets designers apply CSS style to FileThis elements.
 
         Polymer
         ({
-            is: 'demo-fixture',
+            is: 'ft-styleable',
 
             properties:
             {
-                target: {
-                    type: Object,
-                    notify: true
-                },
-            },
-
-            ready: function()
-            {
-                // TODO: This is brittle. Get rid of it.
-                this.async(function()
-                {
-                    this.target = this.$.styleable;
-
-                    // this.updateStyles({
-                    //               '--ft-styleable': 'background-color:blue'
-                    //             });
-
-                    // document.documentElement.style.setProperty('--ft-styleable', 'background-color:blue');
-
-                });
-            },
+            }
 
         });
 

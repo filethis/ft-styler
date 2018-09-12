@@ -56,12 +56,13 @@ aaaaaaaaa
 
         <!-- Element header -->
         <div
-                class="layout horizontal center"
-                style="padding-top:10pt; padding-bottom: 10pt; ">
-
+            class="layout horizontal center"
+            style="padding-top:10pt; padding-bottom: 10pt; "
+        >
             <!-- Heading -->
             <iron-label
-                    style="font-family:Arial; font-size: 14pt; ">
+                style="font-family:Arial; font-size: 14pt; "
+            >
                 CSS
             </iron-label>
 
@@ -69,39 +70,44 @@ aaaaaaaaa
 
             <!-- Example button -->
             <ft-labeled-icon-button
-                    id="exampleButton"
-                    icon="dashboard"
-                    label="Sample"
-                    on-tap="_onExampleButtonClicked">
+                id="exampleButton"
+                icon="dashboard"
+                label="Sample"
+                on-tap="_onExampleButtonClicked"
+            >
             </ft-labeled-icon-button>
 
             <!-- Copy button -->
             <ft-labeled-icon-button
-                    id="copyCssButton"
-                    icon="content-paste"
-                    label="Copy"
-                    on-tap="_onCopyCssButtonClicked">
+                id="copyCssButton"
+                icon="content-paste"
+                label="Copy"
+                on-tap="_onCopyCssButtonClicked"
+            >
             </ft-labeled-icon-button>
 
             <!-- Apply -->
             <ft-labeled-icon-button
-                    id="applyButton"
-                    icon="exit-to-app"
-                    label="Apply"
-                    on-tap="_onApplyButtonClicked">
+                id="applyButton"
+                icon="exit-to-app"
+                label="Apply"
+                on-tap="_onApplyButtonClicked"
+            >
             </ft-labeled-icon-button>
         </div>
 
         <!-- Generated CSS -->
         <juicy-ace-editor
-                id="css"
-                readonly
-                style="border:1px solid #DDD; "
-                theme="ace/theme/chrome"
-                mode="ace/mode/text"
-                fontsize="14px"
-                softtabs
-                tabsize="4"></juicy-ace-editor>
+            id="css"
+            readonly
+            style="border:1px solid #DDD; "
+            theme="ace/theme/chrome"
+            mode="ace/mode/text"
+            fontsize="14px"
+            softtabs
+            tabsize="4"
+        >
+        </juicy-ace-editor>
 
         <!-- Declaration header -->
         <div
@@ -110,7 +116,8 @@ aaaaaaaaa
 
             <!-- Heading -->
             <iron-label
-                    style="font-family:Arial; font-size: 12pt; ">
+                style="font-family:Arial; font-size: 12pt; "
+            >
                 Declarations
             </iron-label>
 
@@ -118,27 +125,31 @@ aaaaaaaaa
 
             <!-- New button -->
             <ft-labeled-icon-button
-                    id="newDeclarationButton"
-                    icon="add"
-                    label="New"
-                    on-tap="_onNewDeclarationButtonClicked">
+                id="newDeclarationButton"
+                icon="add"
+                label="New"
+                on-tap="_onNewDeclarationButtonClicked"
+            >
             </ft-labeled-icon-button>
         </div>
 
         <!-- Declaration List -->
         <div
-                class="scroll"
-                style="padding-bottom:12px; border: 1px solid #DDD; ">
-
-            <template is="dom-repeat" items="{{declarations}}" as="declaration">
+            class="scroll"
+            style="padding-bottom:12px; border: 1px solid #DDD; "
+        >
+            <template is="dom-repeat" items="{{declarations}}" as="declaration"
+            >
                 <ft-css-declaration-editor
-                        declaration="[[declaration]]">
+                    declaration="[[declaration]]"
+                >
                 </ft-css-declaration-editor>
             </template>
         </div>
 
         <!-- Confirmation dialog -->
-        <ft-confirmation-dialog id="confirmationDialog"></ft-confirmation-dialog>
+        <ft-confirmation-dialog id="confirmationDialog">
+        </ft-confirmation-dialog>
 
     </template>
 
@@ -192,14 +203,6 @@ aaaaaaaaa
                                     value: "12px"
                                 },
                                 {
-                                    name:"--ft-connection-special",
-                                    value: "foo"
-                                },
-                                {
-                                    name:"--ft-connection-another",
-                                    value: "bar"
-                                },
-                                {
                                     name:"background-color",
                                     value: "green"
                                 },
@@ -251,11 +254,15 @@ aaaaaaaaa
 
             _generateCss: function()
             {
-                var css = "--" + this.name + ": {";
+                var css = ":root {";
+                css += "\n    --" + this.name + ": {";
+
                 this.declarations.forEach(function(declaration)
                 {
-                    css += "\n    " + declaration.name + ": " + declaration.value + ";";
+                    css += "\n        " + declaration.name + ": " + declaration.value + ";";
                 });
+
+                css += "\n    }";
                 css += "\n}";
 
                 var editor = this.$.css;
@@ -322,6 +329,10 @@ aaaaaaaaa
 
             _applyAllDeclarations: function()
             {
+                var target = this.target;
+                if (!target)
+                    return;
+
                 // For each declaration
                 var styles = {};
                 this.declarations.forEach(function(declaration)
@@ -332,6 +343,8 @@ aaaaaaaaa
 
                     styles[name] = value;
 
+
+
                     // Apply
 //                    if (this.target)
 //                        this.target.updateStyles(css);
@@ -339,7 +352,18 @@ aaaaaaaaa
 //                        Polymer.updateStyles(css);
                 }.bind(this));
 
-                this.target.updateStyles(styles);
+                target.updateStyles({
+                              'background-color': 'blue'
+                            });
+
+                // this.target.updateStyles(styles);
+
+                // this.target.updateStyles({
+                //               'background-color': 'blue'
+                //             });
+                // this.target.updateStyles({
+                //               '--ft-styleable': 'background-color:blue'
+                //             });
             },
 
             _collectInvalidDeclarations: function()
