@@ -342,28 +342,17 @@ aaaaaaaaa
                     var value = declaration.value;
 
                     styles[name] = value;
-
-
-
-                    // Apply
-//                    if (this.target)
-//                        this.target.updateStyles(css);
-//                    else // apply globally
-//                        Polymer.updateStyles(css);
                 }.bind(this));
-
-                target.updateStyles({
-                              'background-color': 'blue'
-                            });
 
                 // this.target.updateStyles(styles);
 
-                // this.target.updateStyles({
-                //               'background-color': 'blue'
-                //             });
-                // this.target.updateStyles({
-                //               '--ft-styleable': 'background-color:blue'
-                //             });
+                var elements = Polymer.querySelectorAll("ft-styler");
+                this.elements.forEach(function(element)
+                {
+                    element.updateStyles(styles);
+                }.bind(this));
+
+                // Polymer.updateStyles(styles);
             },
 
             _collectInvalidDeclarations: function()
