@@ -3,9 +3,9 @@
     "description": "An element that lets designers apply CSS style to FileThis elements.",
     "main": "ft-styler.html",
     "dependencies": {
-        "ft-clipboard-behavior": "filethis/ft-clipboard-behavior#^1.0.8",
-        "ft-confirmation-dialog": "filethis/ft-confirmation-dialog#^1.0.22",
-        "ft-labeled-icon-button": "filethis/ft-labeled-icon-button#^1.0.19",
+        "ft-clipboard-behavior": "filethis/ft-clipboard-behavior#^1.0.9",
+        "ft-confirmation-dialog": "filethis/ft-confirmation-dialog#^1.0.23",
+        "ft-labeled-icon-button": "filethis/ft-labeled-icon-button#^1.0.20",
         "juicy-ace-editor": "^2.0.4",
         "polymer": "Polymer/polymer#1.9 - 2"
     },
