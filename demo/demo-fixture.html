@@ -20,6 +20,7 @@ limitations under the License.
 <!-- Imports -->
 <link rel="import" href="../../ft-element-demo/ft-element-demo.html">
 <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../paper-listbox/paper-listbox.html">
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../ft-styler.html">
 <link rel="import" href="ft-styleable.html">
@@ -49,13 +50,20 @@ An element that lets designers apply CSS style to FileThis elements.
         </style>
 
         <ft-styler
-            style="border-right:1px solid black; "
             target="{{target}}"
+            style="border-right:1px solid black; "
         >
         </ft-styler>
 
-        <ft-styleable id="styleable">
-        </ft-styleable>
+        <!-- Use a polymer class as a parent instead of a "div" so that it has a shadow root, which is needed by the styler target code -->
+        <paper-listbox id="parent">
+
+            <ft-styleable id="first">
+            </ft-styleable>
+
+            <ft-styleable id="second">
+            </ft-styleable>
+        </paper-listbox>
 
     </template>
 
@@ -66,29 +74,22 @@ An element that lets designers apply CSS style to FileThis elements.
             is: 'demo-fixture',
 
             properties:
-            {
-                target: {
-                    type: Object,
-                    notify: true
+                {
+                    target: {
+                        type: Object,
+                        notify: true
+                    },
                 },
-            },
 
             ready: function()
             {
-                // TODO: This is brittle. Get rid of it.
                 this.async(function()
                 {
-                    this.target = this.$.styleable;
-
-                    // this.updateStyles({
-                    //               '--ft-styleable': 'background-color:blue'
-                    //             });
-
-                    // document.documentElement.style.setProperty('--ft-styleable', 'background-color:blue');
-
+                    // this.target = this.$.first;
+                    this.target = this.$.parent;
+                    // this.target = this;
                 });
             },
-
         });
 
     </script>

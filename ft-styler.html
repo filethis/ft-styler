@@ -61,6 +61,7 @@ aaaaaaaaa
         >
             <!-- Heading -->
             <iron-label
+                id="myheading"
                 style="font-family:Arial; font-size: 14pt; "
             >
                 CSS
@@ -172,47 +173,45 @@ aaaaaaaaa
 
             properties: {
 
+                target: {
+                    type: Object,
+                    notify: true,
+                },
+
                 name: {
                     type: String,
                     notify: true,
                     value: "ft-thing",
-                    observer: "_onSettingChanged"
+                    observer: "_onSettingChanged",
                 },
 
                 css: {
                     type: String,
-                    notify: true
+                    notify: true,
                 },
 
-                target: {
-                    type: Object,
-                    notify: true
-                },
-
-                declarations: {
+                _declarations: {
                     type: Array,
                     notify: true,
                     value: function () {
-                            return [
-                                {
-                                    name: "color",
-                                    value: "red"
-                                },
-                                {
-                                    name: "padding",
-                                    value: "12px"
-                                },
-                                {
-                                    name:"background-color",
-                                    value: "green"
-                                },
-                                {
-                                    name:"font-family",
-                                    value: "Ariel"
-                                }
-                            ]
-                        }
-                }
+                            return []
+                        },
+                },
+
+                _addedDeclarations: {
+                    type: Array,
+                    value: [],
+                },
+
+                _deletedDeclarations: {
+                    type: Array,
+                    value: [],
+                },
+
+                _modifiedDeclarations: {
+                    type: Array,
+                    value: [],
+                },
             },
 
             ready: function()
@@ -234,7 +233,103 @@ aaaaaaaaa
                         maxLines:Infinity,
                         minLines:3
                     });
+
+                    // TODO: Remove this after testing
+                    this._addDeclaration({
+                        name: "color",
+                        value: "red"
+                    });
+                    this._addDeclaration({
+                        name: "padding",
+                        value: "12px"
+                    });
+                    this._addDeclaration({
+                        name:"background-color",
+                        value: "green"
+                    });
+                    this._addDeclaration({
+                        name:"font-family",
+                        value: "Ariel"
+                    });
+                    this._applyDeclarationChanges();
                 }.bind(this), 100)
+            },
+
+            _addDeclaration: function(declaration)
+            {
+                // If we already have a declaration with the same name and value, short circuit
+                var alreadyAdded = this._listContainsDeclarationWithNameAndValue(this._addedDeclarations, declaration);
+                if (alreadyAdded)
+                    return;
+
+                // If we previously deleted a declaration with the same name and value, remove the deletion record
+                this._removeDeclarationWithNameAndValueFrom(declaration, this._deletedDeclarations);
+
+                // Give this declaration a unique ID
+                declaration.id = this._generateGuid();
+
+                // Record the addition of the declaration
+                this._addedDeclarations.push(declaration);
+                
+                // Add it to the main list
+                this._declarations.push(declaration);
+            },
+
+            _deleteDeclarationWithId: function(id)
+            {
+                var alreadyDeleted = this._listContainsDeclarationWithNameAndValue(this._deletedDeclarations, declaration);
+                if (alreadyDeleted)
+                    return;
+
+                this._removeDeclarationWithNameAndValueFrom(declaration, this._addedDeclarations);
+                this._removeDeclarationWithNameAndValueFrom(declaration, this._modifiedDeclarations);
+
+                this._deletedDeclarations.push(declaration);
+            },
+
+            _modifyDeclaration: function(declaration)
+            {
+                var alreadyModified = this._listContainsDeclarationWithNameAndValue(this._modifiedDeclarations, declaration);
+                if (alreadyModified)
+                    return;
+
+                this._modifiedDeclarations.push(declaration);
+            },
+
+            _removeDeclarationWithNameAndValueFrom: function(declaration, list)
+            {
+                var index = this._findDeclarationIndexByNameAndValueIn(declaration, list);
+                if (index < 0)
+                    return;
+                list.splice(index, 1);
+            },
+
+            _findDeclarationIndexByNameAndValueIn: function(declaration, list)
+            {
+                var name = declaration.name;
+                var value = declaration.value;
+                var count = list.length;
+                for (var index = 0; index < count; index++)
+                {
+                    var element = list[index];
+                    if (element.name !== name)
+                        continue;
+                    if (element.value !== value)
+                        continue;
+                    return index;
+                }
+                return -1;
+            },
+
+            _listContainsDeclarationWithNameAndValue: function(list, declaration)
+            {
+                var index = this._findDeclarationIndexByNameAndValueIn(declaration, list);
+                return (index >= 0);
+            },
+
+            _applyDeclarationChanges: function()
+            {
+                // TODO
             },
 
             _onSettingChanged: function()
@@ -257,7 +352,7 @@ aaaaaaaaa
                 var css = ":root {";
                 css += "\n    --" + this.name + ": {";
 
-                this.declarations.forEach(function(declaration)
+                this._declarations.forEach(function(declaration)
                 {
                     css += "\n        " + declaration.name + ": " + declaration.value + ";";
                 });
@@ -279,8 +374,8 @@ aaaaaaaaa
                 };
 
                 // Add the declaration
-                var index = this.declarations.indexOf(declaration);
-                this.push('declarations', declaration);
+                var index = this._declarations.indexOf(declaration);
+                this.push('_declarations', declaration);
             },
 
             _onDeleteDeclarationCommand: function(event)
@@ -288,8 +383,8 @@ aaaaaaaaa
                 var declaration = event.detail;
 
                 // Remove the given declaration
-                var index = this.declarations.indexOf(declaration);
-                this.splice('declarations', index, 1);
+                var index = this._declarations.indexOf(declaration);
+                this.splice('_declarations', index, 1);
             },
 
             _onApplyButtonClicked: function(event, detail)
@@ -333,37 +428,48 @@ aaaaaaaaa
                 if (!target)
                     return;
 
-                // For each declaration
-                var styles = {};
-                this.declarations.forEach(function(declaration)
+                var styles = [];
+                this._declarations.forEach(function(declaration)
                 {
                     // Build css expression for this declaration
-                    var name = declaration.name;
-                    var value = declaration.value;
+                    var style = {};
+                    style.name = declaration.name;
+                    style.value = declaration.value;
 
-                    styles[name] = value;
+                    styles.push(style);
                 }.bind(this));
 
-                // this.target.updateStyles(styles);
+                var elements = [];
+                var targetRoot = target.root;
+                var element = Polymer.dom(targetRoot).querySelector("#mystyleable");
+                if (element)
+                     elements = [element];
 
-                var elements = Polymer.querySelectorAll("ft-styler");
-                this.elements.forEach(function(element)
+                elements.forEach(function(element)
                 {
-                    element.updateStyles(styles);
-                }.bind(this));
+                    // Remove all styles
+                    element.removeAttribute("style");
 
-                // Polymer.updateStyles(styles);
+                    // Apply all given styles
+                    styles.forEach(function(style)
+                    {
+                        element.style[style.name] = style.value;
+                    }.bind(this));
+
+                }.bind(this));
             },
+
+            // To remove a style:  element.style.removeProperty("background-color");
 
             _collectInvalidDeclarations: function()
             {
                 var invalidStylables = [];
-                var count = this.declarations.length;
+                var count = this._declarations.length;
                 for (var index = 0;
                      index < count;
                      index++)
                 {
-                    var declaration = this.declarations[index];
+                    var declaration = this._declarations[index];
                     if (!this._declarationIsValid(declaration))
                         invalidStylables.push(declaration);
                 }
@@ -387,7 +493,20 @@ aaaaaaaaa
                 if (!changeRecord)
                     return;
                 this._onSettingChanged();
-            }
+            },
+
+            _generateGuid: function()
+            {
+                function s4()
+                {
+                    return Math.floor((1 + Math.random()) * 0x10000)
+                        .toString(16)
+                        .substring(1);
+                }
+
+                return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                    s4() + '-' + s4() + s4() + s4();
+            },
 
         });
 
