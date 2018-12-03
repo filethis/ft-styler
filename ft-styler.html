@@ -349,7 +349,7 @@ aaaaaaaaa
 
             _generateCss: function()
             {
-                var css = ":root {";
+                var css = ":host > * {";
                 css += "\n    --" + this.name + ": {";
 
                 this._declarations.forEach(function(declaration)
