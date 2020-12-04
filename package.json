@@ -1,7 +1,7 @@
 {
   "description": "An element that lets designers apply CSS style to FileThis elements.",
-  "name": "filethis/ft-styler",
-  "version": "filethis/1.0.12",
+  "name": "ft-styler",
+  "version": "1.0.12",
   "resolutions": {
     "inherits": "2.0.3",
     "samsam": "1.1.3",
