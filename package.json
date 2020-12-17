@@ -10,7 +10,12 @@
   },
   "main": "ft-styler.js",
   "dependencies": {
-    "@polymer/polymer": "^3.0.0"
+    "@polymer/paper-listbox": "^3.0.0",
+    "@polymer/polymer": "^3.0.0",
+    "ft-clipboard-behavior": "file:.yalc/ft-clipboard-behavior",
+    "ft-confirmation-dialog": "file:.yalc/ft-confirmation-dialog",
+    "ft-element-demo": "file:.yalc/ft-element-demo",
+    "ft-labeled-icon-button": "file:.yalc/ft-labeled-icon-button"
   },
   "devDependencies": {
     "@polymer/iron-component-page": "^4.0.0",
@@ -18,7 +23,7 @@
     "@polymer/iron-label": "^3.0.0",
     "@polymer/iron-test-helpers": "^3.0.0",
     "@polymer/paper-input": "^3.0.0",
-    "wct-browser-legacy": "^1.0.1",
-    "@webcomponents/webcomponentsjs": "^2.0.0"
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "wct-browser-legacy": "^1.0.1"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "version": "v1",
+  "packages": {
+    "ft-clipboard-behavior": {
+      "signature": "9b826472ad4236793dc45981c9215d74",
+      "file": true
+    },
+    "ft-confirmation-dialog": {
+      "signature": "67e8a0df66a69ab6b858b258ced2a11c",
+      "file": true
+    },
+    "ft-labeled-icon-button": {
+      "signature": "3bdce6f831e164c93c1d90acdd7db85f",
+      "file": true
+    },
+    "ft-element-demo": {
+      "signature": "b246107b96990bfddd35a67af1d387b5",
+      "file": true
+    }
+  }
+}

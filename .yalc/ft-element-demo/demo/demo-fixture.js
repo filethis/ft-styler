@@ -13,11 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-/* ft-styler element demo */
+/* ft-element-demo element demo */
 /* Imports */
 /**
 
-An element that lets designers apply CSS style to FileThis elements.
+An element that can be used for the demo fixture for FileThis elements. Has a slot for the element to be demoed and a side bar for configuration options.
 
 @demo
  */
@@ -28,11 +28,9 @@ An element that lets designers apply CSS style to FileThis elements.
 */
 
 import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '@polymer/paper-listbox/paper-listbox.js';
+import '@polymer/paper-checkbox/paper-checkbox.js';
 import '@polymer/polymer/polymer-legacy.js';
-import '@webcomponents/shadycss/entrypoints/apply-shim.js';
-import '../ft-styler.js';
-import './ft-styleable.js';
+import '../ft-element-demo.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
@@ -42,47 +40,34 @@ Polymer
         <style include="iron-flex iron-flex-alignment iron-positioning"></style>
 
         <style>
-
-            /* Styling for this component itself */
             :host {
                 display: block;
                 overflow: hidden;
-                @apply --layout-horizontal;
             }
-
         </style>
 
-        <ft-styler target="{{target}}" style="border-right:1px solid black; ">
-        </ft-styler>
+        <ft-element-demo show-config="true" style="width:100%; height: 100%; ">
 
-        <!-- Use a polymer class as a parent instead of a "div" so that it has a shadow root, which is needed by the styler target code -->
-        <paper-listbox id="parent">
+            <div slot="config" style="width:300px; text-align:center; padding-top: 20px; ">
+                slot="config"
+            </div>
 
-            <ft-styleable id="first">
-            </ft-styleable>
+            <div slot="instance" class="layout horizontal wrap scroll" style="width:100%; height: 100%; ">
 
-            <ft-styleable id="second">
-            </ft-styleable>
-        </paper-listbox>
+                <img src="img/beagle.png">
+                <img src="img/dog-in-bowl.png">
+                <img src="img/jack-russel.png">
+                <img src="img/weimaraner.png">
+                <img src="img/puppy-by-woodpile.png">
+                <img src="img/jumping-over-mud.png">
+            </div>
+
+        </ft-element-demo>
 `,
 
   is: 'demo-fixture',
 
   properties:
-      {
-          target: {
-              type: Object,
-              notify: true
-          },
-      },
-
-  ready: function()
   {
-      this.async(function()
-      {
-          // this.target = this.$.first;
-          this.target = this.$.parent;
-          // this.target = this;
-      });
   }
 });
