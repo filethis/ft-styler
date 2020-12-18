@@ -2,19 +2,19 @@
   "version": "v1",
   "packages": {
     "ft-clipboard-behavior": {
-      "signature": "9b826472ad4236793dc45981c9215d74",
+      "signature": "0fd9fb41098c84fbd2575112c267b954",
       "file": true
     },
     "ft-confirmation-dialog": {
-      "signature": "a713a4bf5bdae8839e76001abe2ac659",
+      "signature": "9ccdaa49a0e3ce7d5e933490bb795bf4",
       "file": true
     },
     "ft-labeled-icon-button": {
-      "signature": "3bdce6f831e164c93c1d90acdd7db85f",
+      "signature": "40102ff35b04fbf34029982d02053327",
       "file": true
     },
     "ft-element-demo": {
-      "signature": "b246107b96990bfddd35a67af1d387b5",
+      "signature": "0a85f56af66c83190f4a7b563c318c55",
       "file": true
     }
   }
