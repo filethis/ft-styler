@@ -30,7 +30,7 @@ import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-label/iron-label.js';
-import 'juicy-ace-editor/juicy-ace-editor.js';
+import '@filethis/juicy-ace-editor/juicy-ace-editor-module.js';
 import '@polymer/polymer/polymer-legacy.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';

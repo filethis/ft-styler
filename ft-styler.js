@@ -25,16 +25,16 @@ aaaaaaaaa
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import 'ft-clipboard-behavior/ft-clipboard-behavior.js';
+import '@filethis/ft-clipboard-behavior/ft-clipboard-behavior.js';
 
-import 'ft-confirmation-dialog/ft-confirmation-dialog.js';
-import 'ft-labeled-icon-button/ft-labeled-icon-button.js';
+import '@filethis/ft-confirmation-dialog/ft-confirmation-dialog.js';
+import '@filethis/ft-labeled-icon-button/ft-labeled-icon-button.js';
 import './ft-css-declaration-editor.js';
 import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-label/iron-label.js';
-import 'juicy-ace-editor/juicy-ace-editor.js';
+import '@filethis/juicy-ace-editor/juicy-ace-editor-module.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-textarea.js';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';

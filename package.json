@@ -1,6 +1,6 @@
 {
   "description": "An element that lets designers apply CSS style to FileThis elements.",
-  "name": "ft-styler",
+  "name": "@filethis/ft-styler",
   "version": "1.0.12",
   "resolutions": {
     "inherits": "2.0.3",
@@ -15,7 +15,6 @@
     "*.make",
     "*.png",
     "*.svg",
-    ".yalc/",
     "data/",
     "demo/",
     "test/",
@@ -31,9 +30,9 @@
     "@polymer/paper-listbox": "^3.0.0",
     "@polymer/polymer": "^3.0.0",
     "@filethis/ft-clipboard-behavior": "^1.0.10",
-    "ft-confirmation-dialog": "file:.yalc/ft-confirmation-dialog",
-    "ft-element-demo": "file:.yalc/ft-element-demo",
-    "ft-labeled-icon-button": "file:.yalc/ft-labeled-icon-button"
+    "@filethis/ft-confirmation-dialog": "^1.0.24",
+    "@filethis/ft-element-demo": "^1.0.15",
+    "@filethis/ft-labeled-icon-button": "^1.0.21"
   },
   "devDependencies": {
     "@polymer/iron-component-page": "^4.0.0",

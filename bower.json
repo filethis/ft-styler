@@ -6,7 +6,7 @@
         "ft-clipboard-behavior": "filethis/ft-clipboard-behavior#^1.0.10",
         "ft-confirmation-dialog": "filethis/ft-confirmation-dialog#^1.0.24",
         "ft-labeled-icon-button": "filethis/ft-labeled-icon-button#^1.0.21",
-        "juicy-ace-editor": "^2.0.4",
+        "@filethis/juicy-ace-editor": "^2.0.5-es6",
         "polymer": "Polymer/polymer#^2.7.0"
     },
     "devDependencies": {
